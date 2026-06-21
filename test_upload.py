@@ -34,13 +34,16 @@ def test_pipeline_completo(file_path):
     # 3. Consultar Estado (GET /manuscripts/{id})
     print("3. Consultando estado del manuscrito...")
     status_resp = requests.get(f"{BASE_URL}/api/v1/manuscripts/{manuscript_id}")
-    print(f"   Estado: {status_resp.json().get('estado', 'Pendiente')}")
+    status_json = status_resp.json()
+    print(f"   Estado: {status_json.get('status', 'PENDING')}")
+    print(f"   Progreso: {status_json.get('progress')}")
 
     # 4. Consultar Resultados (GET /manuscripts/{id}/results)
     print("4. Consultando resultados...")
     res_resp = requests.get(f"{BASE_URL}/api/v1/manuscripts/{manuscript_id}/results")
     resultados = res_resp.json()
-    print(f"   Referencias procesadas: {len(resultados)}")
+    print(f"   Referencias evaluadas: {resultados.get('totalEvaluated', 0)}")
+    print(f"   Citas zombi detectadas: {resultados.get('zombieCount', 0)}")
     
     print("\n✅ Prueba finalizada correctamente.")
 
