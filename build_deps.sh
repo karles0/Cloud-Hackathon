@@ -13,7 +13,7 @@ echo -e "\n🧹 1. Limpiando instalaciones previas..."
 rm -rf ./$DEPS_DIR
 
 # Lee las dependencias desde tu archivo requirements.txt
-echo -e "\n📦 2. Instalando dependencias (Amazon Linux - Python 3.12)..."
+echo -e "\n📦 2. Instalando dependencias (Amazon Linux - Python 3.14)..."
 pip install -r requirements.txt -t ./$DEPS_DIR \
     --python-version 3.14 \
     --only-binary=:all:
