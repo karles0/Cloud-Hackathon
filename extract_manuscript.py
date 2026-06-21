@@ -75,7 +75,7 @@ _SOLO_ENTORNO_RE = re.compile(
 )
 
 
-def handler(event, context):
+def lambda_handler(event, context):
     for record in event.get("Records", []):
         bucket = record["s3"]["bucket"]["name"]
         key    = urllib.parse.unquote_plus(record["s3"]["object"]["key"])
