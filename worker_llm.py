@@ -25,11 +25,13 @@ GROQ_URL = "https://api.groq.com/openai/v1/chat/completions"
 
 tabla = boto3.resource("dynamodb").Table(TABLE_NAME)
 
+# Las claves deben coincidir con los temas que produce classify_manuscript.py
+# (en minúscula): medicina | biotecnologia | ingenieria | computacion | general.
 PROMPTS_POR_TEMA = {
-    "Biologia":    "Eres un revisor experto en biologia y ciencias de la vida.",
-    "Matematicas": "Eres un revisor experto en matematicas y ciencias formales.",
-    "Medicina":    "Eres un revisor experto en medicina y ciencias clinicas.",
-    "Computacion": "Eres un revisor experto en informatica e inteligencia artificial.",
+    "medicina":      "Eres un revisor experto en medicina y ciencias clinicas.",
+    "biotecnologia": "Eres un revisor experto en biotecnologia y ciencias de la vida.",
+    "ingenieria":    "Eres un revisor experto en ingenieria y ciencias aplicadas.",
+    "computacion":   "Eres un revisor experto en informatica e inteligencia artificial.",
 }
 PROMPT_DEFECTO = "Eres un revisor experto en integridad cientifica."
 
@@ -62,7 +64,7 @@ _STOP_MATCH = {
 }
 
 
-def handler(event, context):
+def lambda_handler(event, context):
     fallidas = []
     for record in event["Records"]:
         try:
