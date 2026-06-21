@@ -7,8 +7,8 @@ from urllib.parse import unquote_plus
 s3 = boto3.client("s3")
 dynamodb = boto3.resource("dynamodb")
  
-PROCESSED_BUCKET = os.environ.get("PROCESSED_BUCKET_NAME", "centinela-processed-bucket")
-TABLE_NAME = os.environ.get("TABLE_NAME", "Manuscripts")
+PROCESSED_BUCKET = os.environ.get("PROCESSED_BUCKET_NAME", "centinela-processed-manuscripts-dev")
+TABLE_NAME = os.environ.get("TABLE_NAME", "centinela-integridad")
  
 # ---------------------------------------------------------------------------
 # Diccionario Bilingüe de keywords por tema.
