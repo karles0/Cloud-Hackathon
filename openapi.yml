@@ -136,20 +136,81 @@ components:
 
     ManuscriptStatusResponse:
       type: object
-      description: Manuscript metadata stored in DynamoDB. The structure may vary by pipeline stage.
-      additionalProperties: true
+      description: Manuscript status and progress, used by the frontend for polling.
+      required:
+        - manuscriptId
+        - fileName
+        - status
+        - progress
+        - globalIntegrityIndex
       properties:
         manuscriptId:
           type: string
           example: 8d0f2b7b-6cc7-4c06-8c9e-74e3ee2e0ae9
+        fileName:
+          type: string
+          example: tesis_medicina_2024.pdf
+        status:
+          type: string
+          enum: [PENDING, PROCESSING, COMPLETED, ERROR]
+          example: PROCESSING
+        progress:
+          type: object
+          properties:
+            totalBatches:
+              type: integer
+              example: 12
+            processedBatches:
+              type: integer
+              example: 5
+        globalIntegrityIndex:
+          type: integer
+          nullable: true
+          description: Integrity index (0-100). Null until the manuscript is COMPLETED.
+          example: 92
+        topic:
+          type: string
+          nullable: true
+          description: Topic detected by the classifier (medicina | biotecnologia | ingenieria | computacion | general).
+          example: medicina
 
     ManuscriptResultsResponse:
-      type: array
-      description: List of result references associated with the manuscript.
-      items:
-        type: object
-        additionalProperties: true
-        properties:
-          refId:
-            type: string
-            example: 123
+      type: object
+      description: Aggregated evaluation results for a manuscript.
+      required:
+        - manuscriptId
+        - totalEvaluated
+        - zombieCount
+        - results
+      properties:
+        manuscriptId:
+          type: string
+          example: 8d0f2b7b-6cc7-4c06-8c9e-74e3ee2e0ae9
+        totalEvaluated:
+          type: integer
+          example: 12
+        zombieCount:
+          type: integer
+          example: 2
+        results:
+          type: array
+          items:
+            type: object
+            required:
+              - referenceId
+              - citationText
+              - isZombie
+              - analysisContext
+            properties:
+              referenceId:
+                type: string
+                example: "0001"
+              citationText:
+                type: string
+                example: "Smith, J. (2021). Journal of Fake Science, 12."
+              isZombie:
+                type: boolean
+                example: true
+              analysisContext:
+                type: string
+                example: "El artículo citado fue RETRACTADO y el autor lo presenta como evidencia válida."
